@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Diffie-Hellman Key Exchange</title>
+</head>
+<body>
+
+<h2>Diffie-Hellman Key Exchange</h2>
+
+<label>Enter Prime Number (p):</label><br>
+<input type="number" id="p" value="23"><br><br>
+
+<label>Enter Base (g):</label><br>
+<input type="number" id="g" value="5"><br><br>
+
+<label>Enter Alice Private Key:</label><br>
+<input type="number" id="a" value="6"><br><br>
+
+<button onclick="runDH()">Generate Keys</button>
+
+<h3 id="output"></h3>
+
+<script>
+function power(base, exp, mod) {
+    let result = 1;
+    for (let i = 0; i < exp; i++) {
+        result = (result * base) % mod;
+    }
+    return result;
+}
+
+function runDH() {
+    let p = parseInt(document.getElementById("p").value);
+    let g = parseInt(document.getElementById("g").value);
+    let a = parseInt(document.getElementById("a").value);
+
+    // Bob private key (random)
+    let b = Math.floor(Math.random() * 10) + 1;
+
+    // Public keys
+    let A = power(g, a, p); // Alice public key
+    let B = power(g, b, p); // Bob public key
+
+    // Shared secret
+    let keyAlice = power(B, a, p);
+    let keyBob = power(A, b, p);
+
+    document.getElementById("output").innerHTML =
+        "Bob Private Key (b): " + b + "<br><br>" +
+        "Alice Public Key (A): " + A + "<br>" +
+        "Bob Public Key (B): " + B + "<br><br>" +
+        "Shared Key (Alice): " + keyAlice + "<br>" +
+        "Shared Key (Bob): " + keyBob + "<br><br>" +
+        "<b>Keys Match: " + (keyAlice === keyBob) + "</b>";
+}
+</script>
+
+</body>
+</html>
+
